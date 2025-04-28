@@ -54,9 +54,9 @@ class BookController extends BaseController {
 
     try {
       const updatedBook = await bookService.updateBook(id, req.body);
-      res.json(updatedBook);
+      this.sendSuccess(res, "Actualizado correctamente", updatedBook);
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      this.sendError(res, error.message, 404);
     }
   }
 
@@ -66,9 +66,9 @@ class BookController extends BaseController {
 
     try {
       await bookService.deleteBook(id);
-      res.json({ message: "Libro eliminado correctamente" });
+      this.sendSuccess(res, "Libro eliminado correctamente");
     } catch (error: any) {
-      res.status(404).json({ message: error.message });
+      this.sendError(res, error.message, 404);
     }
   }
 }

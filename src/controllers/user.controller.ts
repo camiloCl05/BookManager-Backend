@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import userService from "../services/user.service";
+import { BaseController } from "../core/common/BaseControllers";
 
-class UserController {
+class UserController extends BaseController {
   // Obtener todos los usuarios
   async getAllUsers(req: Request, res: Response): Promise<void> {
     const users = await userService.getAllUsers();
@@ -13,7 +14,7 @@ class UserController {
       const user = await userService.registerUser(req.body);
       res.status(201).json(user);
     } catch (error: any) {
-      res.status(400).json({ message: error.message });
+      this.sendError(res, error.message, 400);
     }
   }
 
@@ -23,7 +24,7 @@ class UserController {
     const user = await userService.getUserById(id);
 
     if (!user) {
-      res.status(404).json({ message: "Usuario no encontrado" });
+      this.sendError(res, "Usuario no encontrado", 400);
     } else {
       res.json(user);
     }
@@ -36,8 +37,8 @@ class UserController {
     try {
       await userService.deleteUser(id);
       res.json({ message: "Usuario eliminado correctamente" });
-    } catch (err: any) {
-      res.status(404).json({ message: err.message });
+    } catch (error: any) {
+      this.sendError(res, error.message, 404);
     }
   }
 }
