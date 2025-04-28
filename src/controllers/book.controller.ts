@@ -43,7 +43,8 @@ class BookController extends BaseController {
       const books = await bookService.getBooksByUser(userId);
       res.json(books);
     } catch (error: any) {
-      res.status(400).json({ message: error.message });
+      //res.status(400).json({ message: error.message });
+      this.sendError(res, error.message, 400);
     }
   }
 
